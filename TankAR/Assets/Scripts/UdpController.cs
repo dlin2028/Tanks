@@ -25,8 +25,9 @@ public class UdpController : MonoBehaviour {
         Array.Copy(data, 0, x, 0, 4);
         Array.Copy(data, 4, y, 0, 4);
         Array.Copy(data, 8, a, 0, 4);
-        x1 = BitConverter.ToInt32(x, 0) / 100;
-        y1 = BitConverter.ToInt32(y, 0) / 100;
-        angle = BitConverter.ToInt32(a, 0);
+        x1 = BitConverter.ToInt32(x, 0) / 10000f;
+        y1 = BitConverter.ToInt32(y, 0) / 10000f;
+        angle = BitConverter.ToInt32(a, 0) + 180;
+        angle = 360 - angle;
     }
 }
