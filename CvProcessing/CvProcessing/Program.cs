@@ -95,7 +95,7 @@ namespace CvProcessing
                         continue;
                     }
 
-                    Point[] poly = Cv2.ApproxPolyDP(contour, 4, true);
+                    Point[] poly = Cv2.ApproxPolyDP(hull, 4, true);
 
                     //if(poly.Length != 3)
                     //{
@@ -114,15 +114,20 @@ namespace CvProcessing
 
                     xAverage /= count;
                     yAverage /= count;
+                    Rect rect = Cv2.BoundingRect(hull);
+                    float xCenter = rect.X + rect.Width / 2f;
+                    float yCenter = rect.Y + rect.Height / 2f;
+                    input.Line(new Point(xAverage, yAverage), new Point(xCenter, yCenter), Scalar.White, 2);
 
                     int x = (int)(xAverage * 100);
                     int y = (int)(yAverage * 100);
                     AddData(x, data);
+                    AddData(y, data);
                     GreenDraws.Add(contour);
                 }
 
                 input.DrawContours(GreenDraws, -1, Scalar.DarkGreen, -1);
-                input.DrawContours(BlueDraws, -1, Scalar.Blue, -1);
+                //input.DrawContours(BlueDraws, -1, Scalar.Blue, -1);
                 cvSource1.PutFrame(input);
                 client.Send(data.ToArray(), data.Count, new IPEndPoint(IPAddress.Loopback, 9003));
                 data.Clear();
