@@ -8,6 +8,10 @@ using UnityEngine;
 public class UdpController : MonoBehaviour {
     IPEndPoint EP;
     UdpClient receiver;
+    public float x1;
+    public float y1;
+    public float x2;
+    public float y2;
     void Start()
     {
         receiver = new UdpClient(9003, AddressFamily.InterNetwork);
@@ -15,10 +19,12 @@ public class UdpController : MonoBehaviour {
     }
 
     void Update () {
-        byte[] received = receiver.Receive(ref EP);
-        for(int i = 0; i < received.Length; i++)
-        {
-            Debug.Log(received[i]);
-        }
+        byte[] data = receiver.Receive(ref EP);
+        byte[] x = new byte[4];
+        byte[] y = new byte[4];
+        Array.Copy(data, 0, x, 0, 4);
+        Array.Copy(data, 4, y, 0, 4);
+        x1 = BitConverter.ToInt32(x, 0) / 100;
+        y1 = BitConverter.ToInt32(y, 0) / 100;
     }
 }
