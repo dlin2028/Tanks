@@ -51,19 +51,19 @@ namespace CvProcessing
                 }
             });
 
-            IPEndPoint EP = new IPEndPoint(IPAddress.Any, 0);
-            UdpClient reciever = new UdpClient(9003, AddressFamily.InterNetwork);
+            //IPEndPoint EP = new IPEndPoint(IPAddress.Any, 0);
+            //UdpClient reciever = new UdpClient(9003, AddressFamily.InterNetwork);
 
-            while (true)
-            {
-                byte[] received = reciever.Receive(ref EP);
-                Console.Write("{ ");
-                for (int i = 0; i < received.Length; i++)                    
-                {
-                    Console.Write($"{received[i]}{(i < received.Length - 1 ? "," : "")}");
-                }
-                Console.WriteLine($" }} (from: {EP})");
-            }
+            //while (true)
+            //{
+            //    byte[] received = reciever.Receive(ref EP);
+            //    Console.Write("{ ");
+            //    for (int i = 0; i < received.Length; i++)                    
+            //    {
+            //        Console.Write($"{received[i]}{(i < received.Length - 1 ? "," : "")}");
+            //    }
+            //    Console.WriteLine($" }} (from: {EP})");
+            //}
 
             Mat input = new Mat();
             Mat hsv = new Mat();
