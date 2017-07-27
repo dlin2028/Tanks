@@ -2,6 +2,9 @@
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace CvProcessing
 {
@@ -37,6 +40,30 @@ namespace CvProcessing
             cvSource2.CreateProperty("VHigh", PropertyKind.Integer, 0, 255, 1, 255, 255);
 
 
+            Task.Factory.StartNew(() =>
+            {
+                UdpClient client = new UdpClient();
+                var data = new byte[] { 1, 2, 3, 4, 5, 6 };
+
+                while (true)     //NOTE: Don't do that! Use a Cancellation token
+                { 
+                    client.Send(data, data.Length, new IPEndPoint(IPAddress.Loopback, 9003));
+                }
+            });
+
+            IPEndPoint EP = new IPEndPoint(IPAddress.Any, 0);
+            UdpClient reciever = new UdpClient(9003, AddressFamily.InterNetwork);
+
+            while (true)
+            {
+                byte[] received = reciever.Receive(ref EP);
+                Console.Write("{ ");
+                for (int i = 0; i < received.Length; i++)                    
+                {
+                    Console.Write($"{received[i]}{(i < received.Length - 1 ? "," : "")}");
+                }
+                Console.WriteLine($" }} (from: {EP})");
+            }
 
             Mat input = new Mat();
             Mat hsv = new Mat();
