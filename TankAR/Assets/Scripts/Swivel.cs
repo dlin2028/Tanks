@@ -9,23 +9,25 @@ public class Swivel : MonoBehaviour {
         Closed,
         Open
     }
+    
+    public bool isLeftGate; //Temporary variable so we know which way to turn from default position
 
-    public GameObject Block1;
-    public GameObject Block2;
-
-    public BoxCollider Block1Collider;
-    public BoxCollider Block2Collider;
-
-    private SwivelState state = SwivelState.Closed;
+    int angle = 0;
 
     void Start ()
     {
-		
+
 	}
 	
 	void Update ()
-    {
-        //Block1.transform.Rotate(Vector3.back * Time.deltaTime * 10);
-        //Block1.transform.RotateAround(new Vector3(Block1Collider.bounds.size.x, 0, 0). )
-	}
+    {   
+        if (isLeftGate)
+        {
+            transform.Rotate(Vector3.back * Time.deltaTime * 20);
+        }
+        else
+        {
+            transform.Rotate(Vector3.back * Time.deltaTime * -20);
+        }   
+    }
 }
