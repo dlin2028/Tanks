@@ -443,8 +443,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
-=======
 --- !u!114 &227101566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,7 +457,6 @@ MonoBehaviour:
   x1: 0
   y1: 0
   angle: 0
->>>>>>> 58db0d73caa33a509f47668baef6da3b94eb559f
 --- !u!1 &412769756
 GameObject:
   m_ObjectHideFlags: 0

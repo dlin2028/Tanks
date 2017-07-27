@@ -11,7 +11,7 @@ public class TankController : MonoBehaviour {
     }
 
     void Update () {
-        transform.position = new Vector2(Udp.x1, Udp.x2);
+        transform.position = new Vector2(Udp.x1, Udp.y1);
         transform.rotation = Quaternion.Euler(0, 0, Udp.angle);
 	}
 }
