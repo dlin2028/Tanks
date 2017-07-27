@@ -10,8 +10,7 @@ public class UdpController : MonoBehaviour {
     UdpClient receiver;
     public float x1;
     public float y1;
-    public float x2;
-    public float y2;
+    public float angle;
     void Start()
     {
         receiver = new UdpClient(9003, AddressFamily.InterNetwork);
@@ -22,9 +21,12 @@ public class UdpController : MonoBehaviour {
         byte[] data = receiver.Receive(ref EP);
         byte[] x = new byte[4];
         byte[] y = new byte[4];
+        byte[] a = new byte[4];
         Array.Copy(data, 0, x, 0, 4);
         Array.Copy(data, 4, y, 0, 4);
+        Array.Copy(data, 8, a, 0, 4);
         x1 = BitConverter.ToInt32(x, 0) / 100;
         y1 = BitConverter.ToInt32(y, 0) / 100;
+        angle = BitConverter.ToInt32(a, 0);
     }
 }
