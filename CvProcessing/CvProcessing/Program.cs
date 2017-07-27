@@ -12,6 +12,9 @@ namespace CvProcessing
     {
         static void Main(string[] args)
         {
+            UdpClient client = new UdpClient();
+            List<byte> data = new List<byte>();
+
             HttpCamera skyCam = new HttpCamera("HTTPCam", "http://192.168.1.121:1181/stream.mjpg");
 
             MjpegServer mjpeg = new MjpegServer("MjpegServer", 9000);
@@ -21,11 +24,11 @@ namespace CvProcessing
             skySink.Source = mjpeg.Source;
             skySink.Enabled = true;
 
-            CvSource cvSource1 = new CvSource("Source 1", PixelFormat.Mjpeg, 640, 360, 30);
+            CvSource cvSource1 = new CvSource("Source 1", PixelFormat.Mjpeg, 1920, 1080, 30);
             MjpegServer source1Server = new MjpegServer("Source 1 server", 9001);
             source1Server.Source = cvSource1;
 
-            CvSource cvSource2 = new CvSource("Source 2", PixelFormat.Mjpeg, 640, 360, 30);
+            CvSource cvSource2 = new CvSource("Source 2", PixelFormat.Mjpeg, 1920, 1080, 30);
             MjpegServer inRangeServer = new MjpegServer("Source 2 server", 9002);
             inRangeServer.Source = cvSource2;
 
@@ -36,20 +39,8 @@ namespace CvProcessing
             cvSource2.CreateProperty("SLow", PropertyKind.Integer, 0, 255, 1, 100, 100);
             cvSource2.CreateProperty("SHigh", PropertyKind.Integer, 0, 255, 1, 255, 255);
 
-            cvSource2.CreateProperty("VLow", PropertyKind.Integer, 0, 255, 1, 155, 155);
+            cvSource2.CreateProperty("VLow", PropertyKind.Integer, 0, 255, 1, 150, 150);
             cvSource2.CreateProperty("VHigh", PropertyKind.Integer, 0, 255, 1, 255, 255);
-
-
-            Task.Factory.StartNew(() =>
-            {
-                UdpClient client = new UdpClient();
-                var data = new byte[] { 1, 2, 3, 4, 5, 6 };
-
-                while (true)     //NOTE: Don't do that! Use a Cancellation token
-                { 
-                    client.Send(data, data.Length, new IPEndPoint(IPAddress.Loopback, 9003));
-                }
-            });
 
             //IPEndPoint EP = new IPEndPoint(IPAddress.Any, 0);
             //UdpClient reciever = new UdpClient(9003, AddressFamily.InterNetwork);
@@ -77,7 +68,7 @@ namespace CvProcessing
                     continue;
                 }
 
-                Cv2.Resize(input, input, new Size(640, 360));
+                //Cv2.Resize(input, input, new Size(640, 360));
 
                 Cv2.CvtColor(input, hsv, ColorConversionCodes.BGR2HSV);
 
@@ -99,25 +90,51 @@ namespace CvProcessing
                 foreach (var contour in contours)
                 {
                     Point[] hull = Cv2.ConvexHull(contour);
-                    if(Cv2.ContourArea(hull) < 400)
+                    if(Cv2.ContourArea(hull) < 500)
                     {
                         continue;
                     }
 
                     Point[] poly = Cv2.ApproxPolyDP(contour, 4, true);
 
-                    if(poly.Length != 3)
+                    //if(poly.Length != 3)
+                    //{
+                    //    continue;
+                    //}
+
+                    double yAverage = 0;
+                    double xAverage = 0;
+                    int count = 0;
+                    for (int i = 0; i < poly.Length; i++)
                     {
-                        continue;
+                        count++;
+                        xAverage += poly[i].X;
+                        yAverage += poly[i].Y;
                     }
 
-                    GreenDraws.Add(hull);
+                    xAverage /= count;
+                    yAverage /= count;
+
+                    int x = (int)(xAverage * 100);
+                    int y = (int)(yAverage * 100);
+                    AddData(x, data);
+                    GreenDraws.Add(contour);
                 }
 
                 input.DrawContours(GreenDraws, -1, Scalar.DarkGreen, -1);
                 input.DrawContours(BlueDraws, -1, Scalar.Blue, -1);
                 cvSource1.PutFrame(input);
+                client.Send(data.ToArray(), data.Count, new IPEndPoint(IPAddress.Loopback, 9003));
+                data.Clear();
             }
+        }
+
+        static void AddData(int x, List<byte> data)
+        {
+            data.Add((byte) (x & 0xff));
+            data.Add((byte)((x >> 8) & 0xff));
+            data.Add((byte)((x >> 16) & 0xff));
+            data.Add((byte)((x >> 24) & 0xff));
         }
     }
 }
