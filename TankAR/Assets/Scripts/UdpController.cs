@@ -24,6 +24,7 @@ public class UdpController : MonoBehaviour {
 
     void Update () {
         byte[] data = receiver.Receive(ref EP);
+        if (data.Length != 32) return;
         byte[] x = new byte[4];
         byte[] y = new byte[4];
         byte[] a = new byte[4];
