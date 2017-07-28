@@ -32,10 +32,9 @@ public class UdpController : MonoBehaviour {
         Array.Copy(data, 8, a, 0, 4);
         Array.Copy(data, 12, s1, 0, 4);
         Array.Copy(data, 16, s2, 0, 4);
-
-        x1 = BitConverter.ToInt32(x, 0) / 10000f;
-        y1 = BitConverter.ToInt32(y, 0) / 10000f;
-        angle = BitConverter.ToInt32(a, 0) + 180;
+        x1 = BitConverter.ToInt32(x, 0) / 100f;
+        y1 = BitConverter.ToInt32(y, 0) / 100f;
+        angle = BitConverter.ToInt32(a, 0) + 180 - 90;
         angle = 360 - angle;
 
         swivel1 = interpSwivel(BitConverter.ToInt32(s1, 0));

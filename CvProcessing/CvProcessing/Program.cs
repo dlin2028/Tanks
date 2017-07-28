@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -192,7 +193,26 @@ namespace CvProcessing
 
                     }
 
-                    
+                    xAverage /= count;
+                    yAverage /= count;
+
+                    int x = (int)(xAverage * 100);
+                    int y = (int)(yAverage * 100);
+                    int angle = (int)((Math.Atan(opposite / adjacent) * 180/Math.PI));
+                    if (rightQuadrants)
+                    {
+                        angle = angle + 270;
+                        rightQuadrants = false;
+                    }
+                    else
+                    {
+                        angle += 90;
+                    }
+                    Console.WriteLine(x/100 + " " + y/100);
+                    AddData(x, data);
+                    AddData(y, data);
+                    AddData(angle, data);
+                    GreenDraws.Add(contour);
                 }
                 input.PutText("Angle1: " + angle1.ToString(), new Point(421, 400), HersheyFonts.HersheyComplex, 0.5f, Scalar.AliceBlue);
                 input.PutText("Angle2: " + angle2.ToString(), new Point(876, 400), HersheyFonts.HersheyComplex, 0.5f, Scalar.HotPink);
@@ -207,6 +227,7 @@ namespace CvProcessing
                 cvSource2.PutFrame(inRange);
                 client.Send(data.ToArray(), data.Count, new IPEndPoint(IPAddress.Loopback, 9003));
                 data.Clear();
+                Thread.Sleep(50);
             }
         }
 
