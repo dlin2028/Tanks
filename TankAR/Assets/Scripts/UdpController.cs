@@ -37,19 +37,8 @@ public class UdpController : MonoBehaviour {
         angle = BitConverter.ToInt32(a, 0) + 180 - 90;
         angle = 360 - angle;
 
-        swivel1 = interpSwivel(BitConverter.ToInt32(s1, 0));
-        swivel2 = interpSwivel(BitConverter.ToInt32(s2, 0));
-    }
+        swivel1 = BitConverter.ToInt32(s1, 0);
+        swivel2 = BitConverter.ToInt32(s2, 0);
 
-    private float interpSwivel(float angle)
-    {
-        if (angle < 0)
-        {
-            return Mathf.Lerp(0, 90, (angle + 90) / -90);
-        }
-        else
-        {
-            return Mathf.Lerp(180, 90, (angle - 90) / 90);
-        }
     }
 }

@@ -196,6 +196,8 @@ namespace CvProcessing
                     }
                 }
                 input.PutText("Angle1: " + angle1.ToString(), new Point(421, 400), HersheyFonts.HersheyComplex, 0.5f, Scalar.AliceBlue);
+
+
                 input.PutText("Angle2: " + angle2.ToString(), new Point(876, 400), HersheyFonts.HersheyComplex, 0.5f, Scalar.HotPink);
                 Cv2.Circle(input, new Point(421, 372), 1, Scalar.AliceBlue);
                 Cv2.Circle(input, new Point(876, 369), 1, Scalar.AliceBlue);
