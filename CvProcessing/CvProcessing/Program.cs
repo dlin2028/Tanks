@@ -161,6 +161,8 @@ namespace CvProcessing
                         {
                             angle += 90;
                         }
+                        xAverage /= count;
+                        yAverage /= count;
                         //Console.WriteLine(angle);
                         AddData(x, data);
                         AddData(y, data);
@@ -192,27 +194,6 @@ namespace CvProcessing
                         }
 
                     }
-
-                    xAverage /= count;
-                    yAverage /= count;
-
-                    int x = (int)(xAverage * 100);
-                    int y = (int)(yAverage * 100);
-                    int angle = (int)((Math.Atan(opposite / adjacent) * 180/Math.PI));
-                    if (rightQuadrants)
-                    {
-                        angle = angle + 270;
-                        rightQuadrants = false;
-                    }
-                    else
-                    {
-                        angle += 90;
-                    }
-                    Console.WriteLine(x/100 + " " + y/100);
-                    AddData(x, data);
-                    AddData(y, data);
-                    AddData(angle, data);
-                    GreenDraws.Add(contour);
                 }
                 input.PutText("Angle1: " + angle1.ToString(), new Point(421, 400), HersheyFonts.HersheyComplex, 0.5f, Scalar.AliceBlue);
                 input.PutText("Angle2: " + angle2.ToString(), new Point(876, 400), HersheyFonts.HersheyComplex, 0.5f, Scalar.HotPink);
