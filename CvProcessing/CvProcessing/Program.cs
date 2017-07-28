@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CvProcessing
@@ -158,7 +159,7 @@ namespace CvProcessing
                     {
                         angle += 90;
                     }
-                    Console.WriteLine(angle);
+                    Console.WriteLine(x/100 + " " + y/100);
                     AddData(x, data);
                     AddData(y, data);
                     AddData(angle, data);
@@ -171,6 +172,7 @@ namespace CvProcessing
                 cvSource2.PutFrame(inRange);
                 client.Send(data.ToArray(), data.Count, new IPEndPoint(IPAddress.Loopback, 9003));
                 data.Clear();
+                Thread.Sleep(50);
             }
         }
 
