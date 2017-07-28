@@ -50,19 +50,12 @@ public class UdpController : MonoBehaviour {
         angle = BitConverter.ToInt32(a, 0) + 180 - 90;
         angle = 360 - angle;
 
-<<<<<<< HEAD
-        swivel1 = BitConverter.ToInt32(s1, 0);
-        swivel2 = BitConverter.ToInt32(s2, 0);
-=======
         x2 = BitConverter.ToInt32(xA2, 0) / 100f;
         y2 = BitConverter.ToInt32(yA2, 0) / 100f;
         angle2 = BitConverter.ToInt32(aA2, 0) + 180 - 90;
         angle2 = 360 - angle2;
 
-        swivel1 = interpSwivel(BitConverter.ToInt32(s1, 0));
-        swivel2 = interpSwivel(BitConverter.ToInt32(s2, 0));
-    }
->>>>>>> 9899829985b2369e4aed29f919c62f59088de753
-
+        swivel1 = BitConverter.ToInt32(s1, 0);
+        swivel2 = BitConverter.ToInt32(s2, 0);
     }
 }
