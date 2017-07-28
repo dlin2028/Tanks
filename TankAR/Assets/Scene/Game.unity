@@ -542,12 +542,6 @@ MonoBehaviour:
   angle: 0
   swivel1: 0
   swivel2: 0
-<<<<<<< HEAD
-=======
-  x2: 0
-  y2: 0
-  angle2: 0
->>>>>>> 9899829985b2369e4aed29f919c62f59088de753
 --- !u!1 &412769756
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,11 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 638070d67405a6b42a3f12a07b59c85c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   controller: {fileID: 1552868307}
-=======
-  controller: {fileID: 0}
->>>>>>> 9899829985b2369e4aed29f919c62f59088de753
   swivelID: 1
 --- !u!4 &427433358
 Transform:
@@ -1854,13 +1844,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 638070d67405a6b42a3f12a07b59c85c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   controller: {fileID: 1552868307}
   swivelID: 2
-=======
-  controller: {fileID: 0}
-  swivelID: 1
->>>>>>> 9899829985b2369e4aed29f919c62f59088de753
 --- !u!1 &1399896589
 GameObject:
   m_ObjectHideFlags: 0
@@ -2237,12 +2222,6 @@ MonoBehaviour:
   angle: 0
   swivel1: 0
   swivel2: 0
-<<<<<<< HEAD
-=======
-  x2: 0
-  y2: 0
-  angle2: 0
->>>>>>> 9899829985b2369e4aed29f919c62f59088de753
 --- !u!4 &1552868308
 Transform:
   m_ObjectHideFlags: 0
