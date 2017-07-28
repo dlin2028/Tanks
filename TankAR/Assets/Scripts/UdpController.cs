@@ -71,16 +71,18 @@ public class UdpController : MonoBehaviour {
     }
 
     void Loop () {
-        //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         while (true)
         {
-            //sw.Reset();
-            //sw.Start();
+            sw.Reset();
+            sw.Start();
             var tmp = receiver.Receive(ref EP);
             lock (locker)
             {
                 data = tmp; 
             }
+            Debug.Log(sw.Elapsed);
+
         }
     }
 }
