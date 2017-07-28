@@ -23,22 +23,22 @@ public class Swivel : MonoBehaviour {
         {
             if(controller.swivel1 < 0)
             {
-                transform.rotation = Quaternion.Euler(0,0,Mathf.Lerp(10, 178, Mathf.InverseLerp(-95, -180, controller.swivel1) * 0.5f));
+                transform.rotation = Quaternion.Euler(0, 0, controller.swivel1 + 90);
             }
             else
             {
-                transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, -180, 0.5f + Mathf.InverseLerp(180, 92, controller.swivel1) * 0.5f));
+                transform.rotation = Quaternion.Euler(0, 0, controller.swivel1 + 90) ;
             }
         }
         else
         {
             if (controller.swivel2 < 0)
             {
-                transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(90, 180, Mathf.InverseLerp(-180, -90, controller.swivel2) * 0.5f));
+                transform.rotation = Quaternion.Euler(0, 0, controller.swivel2 - 90);
             }
             else
             {
-                transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(90, -10, 0.5f + Mathf.InverseLerp(180, 90, controller.swivel2) * 0.5f));
+                transform.rotation = Quaternion.Euler(0, 0, controller.swivel2 - 90);
             }
         }
     }
