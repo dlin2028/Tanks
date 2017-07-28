@@ -17,6 +17,10 @@ namespace CvProcessing
             UdpClient client = new UdpClient();
             List<byte> data = new List<byte>();
 
+            int x2 = 0;
+            int y2 = 0;
+            int a2 = 0;
+
             HttpCamera skyCam = new HttpCamera("HTTPCam", "http://192.168.1.121:1181/stream.mjpg");
 
             MjpegServer mjpeg = new MjpegServer("MjpegServer", 9000);
@@ -101,6 +105,71 @@ namespace CvProcessing
                     {
                         if (Cv2.ContourArea(hull) < 560)
                         {
+                            #region OtherTriangle
+                            if(Cv2.ContourArea(hull) < 500)
+                            {
+                                continue;
+                            }
+                            double yAv = 0;
+                            double xAv = 0;
+                            int ct = 0;
+                            for (int i = 0; i < poly.Length; i++)
+                            {
+                                ct++;
+                                xAv += poly[i].X;
+                                yAv += poly[i].Y;
+                            }
+
+                            double zO = poly[0].DistanceTo(poly[1]);
+                            double oT = poly[1].DistanceTo(poly[2]);
+                            double tZ = poly[2].DistanceTo(poly[0]);
+
+                            double op = 0;
+                            double adj = 0;
+                            bool rQ = false;
+
+                            if (zO < oT && zO < tZ)
+                            {
+                                Point p = new Point((poly[0].X + poly[1].X) / 2, (poly[0].Y + poly[1].Y) / 2);
+                                input.Line(p, poly[2], Scalar.White, 2);
+                                op = poly[2].Y - p.Y;
+                                adj = poly[2].X - p.X;
+                                if (adj >= 0) rQ = true;
+                            }
+                            else if (oT < zO && oT < tZ)
+                            {
+                                Point p = new Point((poly[1].X + poly[2].X) / 2, (poly[1].Y + poly[2].Y) / 2);
+                                input.Line(p, poly[0], Scalar.White, 2);
+                                op = poly[0].Y - p.Y;
+                                adj = poly[0].X - p.X;
+                                if (adj >= 0) rQ = true;
+                            }
+                            else
+                            {
+                                Point p = new Point((poly[2].X + poly[0].X) / 2, (poly[2].Y + poly[0].Y) / 2);
+                                input.Line(p, poly[1], Scalar.White, 2);
+                                op = poly[1].Y - p.Y;
+                                adj = poly[1].X - p.X;
+                                if (adj >= 0) rQ = true;
+                            }
+
+                            xAv /= ct;
+                            yAv /= ct;
+
+                            x2 = (int)(xAv * 100);
+                            y2 = (int)(yAv * 100);
+                            a2 = (int)((Math.Atan(op / adj) * 180 / Math.PI));
+                            if (rQ)
+                            {
+                                a2 = a2 + 270;
+                                rQ = false;
+                            }
+                            else
+                            {
+                                a2 += 90;
+                            }
+                            #endregion
+
                             continue;
                         }
                         double yAverage = 0;
@@ -161,8 +230,6 @@ namespace CvProcessing
                         {
                             angle += 90;
                         }
-                        xAverage /= count;
-                        yAverage /= count;
                         //Console.WriteLine(angle);
                         AddData(x, data);
                         AddData(y, data);
@@ -204,6 +271,9 @@ namespace CvProcessing
 
                 AddData((int)Math.Round(angle1, 0), data);
                 AddData((int)Math.Round(angle2, 0), data);
+                AddData(x2, data);
+                AddData(y2, data);
+                AddData(a2, data);
 
                 input.DrawContours(polyPoints, - 1, Scalar.Blue, -1);
                 cvSource1.PutFrame(input);
