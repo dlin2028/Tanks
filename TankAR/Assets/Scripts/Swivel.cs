@@ -14,13 +14,32 @@ public class Swivel : MonoBehaviour {
 	
 	void Update ()
     {
+        if(controller == null)
+        {
+            return;
+        }
+
         if(swivelID == 1)
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, controller.swivel1));
+            if(controller.swivel1 < 0)
+            {
+                transform.rotation = Quaternion.Euler(0,0,Mathf.Lerp(10, 178, Mathf.InverseLerp(-95, -180, controller.swivel1) * 0.5f));
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(-90, -180, 0.5f + Mathf.InverseLerp(180, 92, controller.swivel1) * 0.5f));
+            }
         }
-        else if(swivelID == 2)
+        else
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, controller.swivel2));
+            if (controller.swivel2 < 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(90, 180, Mathf.InverseLerp(-180, -90, controller.swivel2) * 0.5f));
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(90, -10, 0.5f + Mathf.InverseLerp(180, 90, controller.swivel2) * 0.5f));
+            }
         }
     }
 }
