@@ -94,14 +94,14 @@ namespace CvProcessing
                 foreach (var contour in contours)
                 {
                     Point[] hull = Cv2.ConvexHull(contour);
-                    if (Cv2.ContourArea(hull) < 300)
-                    {
-                        continue;
-                    }
 
                     Point[] poly = Cv2.ApproxPolyDP(hull, 5, true);
                     if (poly.Length == 3)
                     {
+                        if (Cv2.ContourArea(hull) < 560)
+                        {
+                            continue;
+                        }
                         double yAverage = 0;
                         double xAverage = 0;
                         int count = 0;
@@ -167,6 +167,10 @@ namespace CvProcessing
                     }
                     else if(poly.Length == 4)
                     {
+                        if (Cv2.ContourArea(hull) < 300)
+                        {
+                            continue;
+                        }
                         polyPoints.Add(poly);
                         Rect boundingRect = Cv2.BoundingRect(poly);
                         Point centerPoint = new Point(boundingRect.X + boundingRect.Width / 2, boundingRect.Y + boundingRect.Height / 2);
@@ -185,6 +189,7 @@ namespace CvProcessing
 
                             angle2 = Math.Atan2(difference.X, difference.Y) * 180 / Math.PI;
                         }
+
                     }
 
                     
@@ -193,6 +198,10 @@ namespace CvProcessing
                 input.PutText("Angle2: " + angle2.ToString(), new Point(876, 400), HersheyFonts.HersheyComplex, 0.5f, Scalar.HotPink);
                 Cv2.Circle(input, new Point(421, 372), 1, Scalar.AliceBlue);
                 Cv2.Circle(input, new Point(876, 369), 1, Scalar.AliceBlue);
+
+                AddData((int)Math.Round(angle1, 0), data);
+                AddData((int)Math.Round(angle2, 0), data);
+
                 input.DrawContours(polyPoints, - 1, Scalar.Blue, -1);
                 cvSource1.PutFrame(input);
                 cvSource2.PutFrame(inRange);

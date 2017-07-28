@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Swivel : MonoBehaviour {
-    
-    int angle = 0;
+
+    public UdpController controller;
+    public int swivelID = 1;
 
     void Start ()
     {
-
+        
 	}
 	
 	void Update ()
-    {   
-        transform.Rotate(Vector3.back * Time.deltaTime * 20);
+    {
+        if(swivelID == 1)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, controller.swivel1));
+        }
+        else if(swivelID == 2)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, controller.swivel2));
+        }
     }
 }
