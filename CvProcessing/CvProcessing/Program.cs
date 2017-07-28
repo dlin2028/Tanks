@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Numerics;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace CvProcessing
 {
@@ -70,12 +71,17 @@ namespace CvProcessing
             double angle1 = 0;
             double angle2 = 0;
 
+            Stopwatch sw = new Stopwatch();
+
             while (true)
             {
+                sw.Restart();
                 if (skySink.GrabFrame(input) == 0)
                 {
                     continue;
                 }
+
+                
 
                 //Cv2.Resize(input, input, new Size(640, 360));
 
@@ -103,10 +109,10 @@ namespace CvProcessing
                     Point[] poly = Cv2.ApproxPolyDP(hull, 5, true);
                     if (poly.Length == 3)
                     {
-                        if (Cv2.ContourArea(hull) < 560)
+                        if (Cv2.ContourArea(hull) < 580)
                         {
                             #region OtherTriangle
-                            if(Cv2.ContourArea(hull) < 500)
+                            if(Cv2.ContourArea(hull) < 520)
                             {
                                 continue;
                             }
@@ -280,7 +286,8 @@ namespace CvProcessing
                 cvSource2.PutFrame(inRange);
                 client.Send(data.ToArray(), data.Count, new IPEndPoint(IPAddress.Loopback, 9003));
                 data.Clear();
-                Thread.Sleep(50);
+                Console.WriteLine(sw.Elapsed);
+                //Thread.Sleep(20);
             }
         }
 
